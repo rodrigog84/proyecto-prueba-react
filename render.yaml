@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: miapp-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false        # Render te pedirá este valor en el dashboard (no lo hardcodees aquí)
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: FRONTEND_URL
+        sync: false        # Pondrás la URL de tu frontend en Vercel

@@ -11,21 +11,21 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
-    e.preventDefault(); // equivalente a manejar el $_POST en PHP sin recargar la página
+  async function handleSubmit(e) {
+    e.preventDefault();
     setError('');
     setLoading(true);
 
-    // Simulamos un pequeño delay como si fuera una consulta a la BD
-    setTimeout(() => {
-      const success = login(username, password);
-      if (success) {
-        navigate('/dashboard');
-      } else {
-        setError('Usuario o contraseña incorrectos. Prueba: admin / 1234');
-      }
+    try {
+      // login() ahora es async: hace un fetch al backend y espera la respuesta
+      await login(username, password);
+      navigate('/dashboard');
+    } catch (err) {
+      // El backend devolvió un error (ej: credenciales incorrectas)
+      setError(err.message);
+    } finally {
       setLoading(false);
-    }, 600);
+    }
   }
 
   return (

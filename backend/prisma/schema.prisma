@@ -1,0 +1,23 @@
+// Schema de Prisma — equivalente a tu CREATE TABLE en SQL, pero declarativo.
+// Prisma lee esto y genera tanto las migraciones SQL como el cliente JS tipado.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String   // almacenada como hash bcrypt, NUNCA en texto plano
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users") // nombre de la tabla en PostgreSQL
+}
