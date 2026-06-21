@@ -1,6 +1,9 @@
 import { createContext, useContext, useState } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// Usamos ?? en vez de || para que string vacío ("") sea válido.
+// En Docker, VITE_API_URL="" → las URLs son relativas (/api/...) y Nginx las proxifica.
+// En desarrollo local, VITE_API_URL="http://localhost:3001" apunta directo al backend.
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001';
 
 const AuthContext = createContext(null);
 
