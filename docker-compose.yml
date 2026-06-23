@@ -11,8 +11,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB:       ${POSTGRES_DB}
     volumes:
-      # Ruta en el host Windows → datos persisten aunque el contenedor se elimine
-      - "C:/docker_volumes/postgres_data:/var/lib/postgresql/data"
+      # Volumen nombrado — Docker lo gestiona en cualquier OS (Windows, Linux, Mac)
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
     healthcheck:
@@ -68,3 +68,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  postgres_data:
