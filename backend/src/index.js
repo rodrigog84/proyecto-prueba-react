@@ -6,16 +6,23 @@ import authRoutes from './routes/auth.js';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// CORS: permite el frontend en Vercel (cualquier subdominio) y localhost en desarrollo
+// CORS config:
+// - En Docker el backend no está expuesto al exterior (solo Nginx llega a él),
+//   así que podemos reflejar cualquier origen de forma segura.
+// - En producción con dominio propio, setea CORS_ORIGIN=https://tudominio.com
+const corsOrigin = process.env.CORS_ORIGIN;
+
 const allowedOrigins = [
-  /^https:\/\/.*\.vercel\.app$/,
+  /^https?:\/\/.*\.vercel\.app$/,
   'http://localhost:5173',
+  'http://localhost',
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // permitir requests sin origin (ej: Postman)
+    // CORS_ORIGIN=* permite todo (útil en Docker detrás de Nginx)
+    if (corsOrigin === '*' || !origin) return callback(null, true);
     const allowed = allowedOrigins.some((o) =>
       o instanceof RegExp ? o.test(origin) : o === origin
     );

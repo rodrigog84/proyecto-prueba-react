@@ -37,6 +37,7 @@ services:
       PORT:          3001
       # El frontend llega por Nginx en el puerto 80 del mismo host
       FRONTEND_URL:  http://localhost
+      CORS_ORIGIN:   "*"
     # No exponemos el puerto al exterior — Nginx accede internamente por la red Docker
     expose:
       - "3001"
